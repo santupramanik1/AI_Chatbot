@@ -1,19 +1,23 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Rethink+Sans:ital,wght@0,400..800;1,400..800&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Rethink+Sans:ital,wght@0,400..800;1,400..800&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
 
 @import "tailwindcss";
 
 /* For Dark and Light Mode */
 /* @custom-variant dark(&:where(.dark, .dark *)); */
 
-*{
-  font-family: "Rethink Sans", sans-serif;
+* {
+    font-family: "Rethink Sans", sans-serif;
 }
 
-@theme{
-  --color-primary:#E6CCFF;
+@theme {
+    --color-primary: #e6ccff;
 }
 
 /* Hide the Scrollbar */
-::-webkit-scrollbar{
-  display:none;
+::-webkit-scrollbar {
+    display: none;
+}
+
+.reset-tw :not(pre):not(code) {
+    all: revert;
 }

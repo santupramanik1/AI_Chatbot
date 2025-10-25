@@ -6,6 +6,8 @@ import Chatbox from "./components/Chatbox";
 import Community from "./pages/Community";
 import {useAppContext} from "./context/Appcontext";
 import { Menu } from "lucide-react";
+import "./assets/prism.css"
+
 const App = () => {
     const {theme} = useAppContext();
     const [isMenuOpen,setIsMenuOpen]=useState(false)
