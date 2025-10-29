@@ -3,6 +3,8 @@ import cors from "cors"
 import dotenv from "dotenv"
 import { connectDB } from "./configs/db.js"
 import userRouter from "./routes/userRoutes.js"
+import chatRouter from "./routes/chatRoutes.js"
+import messageRouter from "./routes/messageRoutes.js"
 
 dotenv.config()
 
@@ -16,8 +18,14 @@ app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
-// Routes
+// Routes for user
 app.use("/api/user",userRouter)
+
+// Routes for chats
+app.use("/api/chat",chatRouter)
+
+// Router for prompts like text and image 
+app.use("/api/message",messageRouter)
 
 const PORT=process.env.PORT||4000
 app.listen(PORT,()=>{
