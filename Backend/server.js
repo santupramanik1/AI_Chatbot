@@ -5,6 +5,7 @@ import { connectDB } from "./configs/db.js"
 import userRouter from "./routes/userRoutes.js"
 import chatRouter from "./routes/chatRoutes.js"
 import messageRouter from "./routes/messageRoutes.js"
+import creditRouter from "./routes/creditRoute.js"
 
 dotenv.config()
 
@@ -26,6 +27,9 @@ app.use("/api/chat",chatRouter)
 
 // Router for prompts like text and image 
 app.use("/api/message",messageRouter)
+
+// Router for purchas plan 
+app.use("/api/credit",creditRouter)
 
 const PORT=process.env.PORT||4000
 app.listen(PORT,()=>{
