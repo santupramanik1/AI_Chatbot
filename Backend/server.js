@@ -36,7 +36,7 @@ app.use("/api/message",messageRouter)
 app.use("/api/credit",creditRouter)
 
 app.get("/", (req, res) => {
-  res.send("Server is working fine 🚀");
+  res.send("Server is working fine");
 });
 
 const PORT=process.env.PORT||4000
