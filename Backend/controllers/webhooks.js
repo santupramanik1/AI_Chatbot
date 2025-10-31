@@ -11,7 +11,7 @@ export const stripeWebhooks = async (request, response) => {
     try {
         event = stripe.webhooks.constructEvent(request.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
     } catch (error) {
-        return res.status(400).json({success: false, message: `Webhook error: ${error.message}`});
+        return response.status(400).json({success: false, message: `Webhook error: ${error.message}`});
     }
 
     try {
@@ -25,12 +25,16 @@ export const stripeWebhooks = async (request, response) => {
                 const session = sessionList.data[0];
                 const {transactionId, appId} = session.metadata;
 
+                console.log("✅ Webhook received:", event.type);
+                console.log("🧾 Metadata:", session.metadata);
+                
                 if (appId === "quickgpt") {
                     const transaction = await Transaction.findOne({_id: transactionId, isPaid: false});
 
                     // updates credits in user account
                     await User.updateOne({_id: transaction.userId}, {$inc: {credits: transaction.credits}});
 
+                    console.log(transaction);
                     // update credits payment status
                     transaction.isPaid = true;
                     await transaction.save();
@@ -47,6 +51,6 @@ export const stripeWebhooks = async (request, response) => {
         return response.json({recieved: true});
     } catch (error) {
         console.log("webhook processing error", error);
-        return request.status(500).send("Internal server error");
+        return response.status(500).send("Internal server error");
     }
 };
