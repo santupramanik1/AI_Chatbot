@@ -35,6 +35,10 @@ app.use("/api/message",messageRouter)
 // Router for purchas plan 
 app.use("/api/credit",creditRouter)
 
+app.get("/", (req, res) => {
+  res.send("Server is working fine 🚀");
+});
+
 const PORT=process.env.PORT||4000
 app.listen(PORT,()=>{
     console.log(`Server is Listening at PORT :`,PORT)
