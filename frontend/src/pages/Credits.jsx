@@ -3,16 +3,41 @@ import {dummyPlans} from "../assets/assets";
 import Loading from "./Loading";
 import {useAppContext} from "../context/Appcontext";
 import {Plane} from "lucide-react";
+import toast from "react-hot-toast";
 
 const Credits = () => {
-    const {theme} = useAppContext();
+    const {theme, axios, token} = useAppContext();
 
     const [plans, setPlans] = useState([]);
     const [loading, setLoading] = useState(true);
 
     const fetchPlans = async () => {
-        setPlans(dummyPlans);
+        try {
+            const {data} = await axios.get("/api/credit/plan", {headers: {Authorization: token}});
+
+            if (data.success) {
+                setPlans(data.plans);
+            } else {
+                toast.error(data.message);
+            }
+        } catch (error) {
+            toast.error(error.message);
+        }
         setLoading(false);
+    };
+
+    // Purchas plan
+    const purchasPlan = async (planId) => {
+        try {
+            const {data} = await axios.post("/api/credit/purchas", {planId}, {headers: {Authorization: token}});
+            if (data.success) {
+                window.location.href = data.url;
+            } else {
+                toast.error(data.message);
+            }
+        } catch (error) {
+            toast.error(error.message);
+        }
     };
 
     useEffect(() => {
@@ -77,7 +102,10 @@ const Credits = () => {
                                 ))}
                             </ul>
                         </div>
-                        <button className="mt-6 bg-purple-600 hover:bg-purple-700 active:bg-purple-800 text-white font-medium py-2 rounded transition-colors cursor-pointer">
+                        <button
+                            onClick={() => toast.promise(purchasPlan(plan._id), {loading: "Processing..."})}
+                            className="mt-6 bg-purple-600 hover:bg-purple-700 active:bg-purple-800 text-white font-medium py-2 rounded transition-colors cursor-pointer"
+                        >
                             Buy Now
                         </button>
                     </div>
