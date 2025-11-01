@@ -18,13 +18,34 @@ const Sidebar = ({isMenuOpen, setIsMenuOpen}) => {
         setChats,
         fetchUsersChat,
         setToken,
+        token,
     } = useAppContext();
     const [search, setSearch] = useState("");
 
+    // Logout Functionality
     const logout = () => {
         localStorage.removeItem("token");
         setToken(null);
         toast.success("Logout successfully");
+    };
+
+    // Delete the chat
+    const deleteChat = async (e, chatId) => {
+        console.log("Delete chat")
+        try {
+            e.stopPropagation();
+            const confirm = window.confirm("Are you sure you want to delete this chat");
+            if (!confirm) return;
+            const {data} = await axios.post("/api/chat/delete", {chatId}, {headers: {Authorization: token}});
+
+            if (data.success) {
+                setChats((prev) => prev.filter((chat) => chat._id != chatId));
+                await fetchUsersChat();
+                toast.success(data.message);
+            }
+        } catch (error) {
+            toast.success(error.message);
+        }
     };
 
     return (
@@ -41,7 +62,10 @@ const Sidebar = ({isMenuOpen, setIsMenuOpen}) => {
             ></img>
 
             {/* New Chat Button */}
-            <button className="flex gap-2 justify-center mt-10 items-center w-full py-2 text-white bg-linear-to-r  from-[#A456F7] to-[#3D81F6]  text-sm rounded-md cursor-pointer">
+            <button
+                onClick={createNewChat}
+                className="flex gap-2 justify-center mt-10 items-center w-full py-2 text-white bg-linear-to-r  from-[#A456F7] to-[#3D81F6]  text-sm rounded-md cursor-pointer"
+            >
                 <Plus />
                 <span>New Chat</span>
             </button>
@@ -90,7 +114,10 @@ const Sidebar = ({isMenuOpen, setIsMenuOpen}) => {
                             <p className="text-xs text-gray-500 ">{moment(chat.updatedAt).fromNow()}</p>
                         </div>
 
-                        <Trash className="w-4 hidden group-hover:block cursor-pointer"></Trash>
+                        <Trash
+                            onClick={(e) => toast.promise(deleteChat(e, chat._id), {loading: "deleting.."})}
+                            className="w-4 hidden group-hover:block cursor-pointer"
+                        ></Trash>
                     </div>
                 ))}
             </div>

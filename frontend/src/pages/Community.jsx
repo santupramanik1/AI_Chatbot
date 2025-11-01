@@ -2,15 +2,28 @@ import React, {useEffect, useState} from "react";
 import {dummyPublishedImages} from "../assets/assets";
 import Loading from "./Loading";
 import {useAppContext} from "../context/Appcontext";
+import toast from "react-hot-toast";
 
 const Community = () => {
-    const {theme} = useAppContext();
+    const {theme, axios,token} = useAppContext();
 
     const [images, setImages] = useState([]);
     const [loading, setLoading] = useState(true);
 
     const fetchImages = async () => {
-        setImages(dummyPublishedImages);
+        // setImages(dummyPublishedImages);
+        // setLoading(false);
+
+        try {
+            const {data} = await axios.get("api/user/published-images", {headers: {Authorization: token}});
+            if (data.success) {
+                setImages(data.images);
+            } else {
+                toast.error(data.message);
+            }
+        } catch (error) {
+            toast.error(error.message);
+        }
         setLoading(false);
     };
 
@@ -41,7 +54,9 @@ const Community = () => {
                                 className="w-full h-40 md:h-50 2xl:h-60 group-hover:scale-105 transition-transform duration-300 ease-in-out object-cover"
                             ></img>
 
-                            <p className="absolute bottom-0 right-0 text-xs bg-black/50 backdrop-blur text-white px-4 py-1 rounded-tl-xl  transition duration-300 hidden group-hover:block ">Created by{item.userName}</p>
+                            <p className="absolute bottom-0 right-0 text-xs bg-black/50 backdrop-blur text-white px-4 py-1 rounded-tl-xl  transition duration-300 hidden group-hover:block ">
+                                Created by{item.userName}
+                            </p>
                         </a>
                     ))}
                 </div>

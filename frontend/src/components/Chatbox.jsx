@@ -2,21 +2,55 @@ import React, {useEffect, useRef, useState} from "react";
 import {useAppContext} from "../context/Appcontext";
 import {assets} from "../assets/assets";
 import Message from "./Message";
+import toast from "react-hot-toast";
 
 const Chatbox = () => {
-    const {selectedChat, theme} = useAppContext();
+    const {selectedChat, theme, user, setUser, axios, token} = useAppContext();
 
     const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(false);
 
     const [prompt, setPrompt] = useState("");
     const [mode, setMode] = useState("text");
-    const [isPublish, setIsPublish] = useState(false);
+    const [isPublished, setIsPublished] = useState(false);
 
     const containerRef = useRef(null);
 
     const onSubmit = async (e) => {
-        e.preventDefault();
+        try {
+            e.preventDefault();
+            if (!user) return toast("Login to send message");
+            setLoading(true);
+            const promptCopy = prompt;
+            setPrompt("");
+            setMessages((prev) => [...prev, {role: "user", content: prompt, timestamps: Date.now(), isImage: false}]);
+
+            const {data} = await axios.post(
+                `/api/message/${mode}`,
+                {chatId: selectedChat._id, prompt, isPublished},
+                {headers: {Authorization: token}}
+            );
+
+            console.log(data)
+            if (data.success) {
+                setMessages((prev) => [...prev, data.reply]);
+
+                // decrease credits
+                if (mode === "image") {
+                    setUser((prev) => ({...prev, credits: prev.credits - 2}));
+                } else {
+                    setUser((prev) => ({...prev, credits: prev.credits - 1}));
+                }
+            } else {
+                toast.error(data.message);
+                setPrompt(promptCopy);
+            }
+        } catch (error) {
+            toast.error(error.message);
+        } finally {
+            setLoading(false);
+            setPrompt("");
+        }
     };
 
     // whenever user select the messages it will display here
@@ -35,7 +69,6 @@ const Chatbox = () => {
             });
         }
     }, [messages]);
-
 
     return (
         <div className="flex-1 flex flex-col justify-between m-5 md:m-10 xl:mx-30 max-md:mt-14 2xl:pr-40">
@@ -88,9 +121,9 @@ const Chatbox = () => {
                     <p className="text-sm">Publish Generated Image to Community</p>
                     <input
                         type="checkbox"
-                        onChange={(e) => setIsPublish(e.target.checked)}
+                        onChange={(e) => setIsPublished(e.target.checked)}
                         className="cursor-pointer"
-                        checked={isPublish}
+                        checked={isPublished}
                     ></input>
                 </label>
             )}

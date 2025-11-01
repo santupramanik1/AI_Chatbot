@@ -43,7 +43,7 @@ export const AppContextProvider = ({children}) => {
 
     // Create new chat
     const createNewChat = async () => {
-        console.log("✅ createChat route hit by new chat :");
+        
         try {
             if (!user) return toast("Login to create new chat");
             navigate("/");
@@ -59,7 +59,7 @@ export const AppContextProvider = ({children}) => {
     const fetchUsersChat = async () => {
         try {
             const {data} = await axios.get("/api/chat/get", {headers: {Authorization: token}});
-            console.log("Fetched chats:", data);
+          
             if (data.success) {
                 setChats(data.chats);
 
