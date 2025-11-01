@@ -3,16 +3,35 @@ import {useAppContext} from "../context/Appcontext";
 import {assets} from "../assets/assets";
 import {Delete, Gem, Image, LogOut, Plus, Search, Sun, Trash, User, X} from "lucide-react";
 import moment from "moment";
+import toast from "react-hot-toast";
 
-const Sidebar = ({isMenuOpen,setIsMenuOpen}) => {
-    const {chats, setSelectedChat, theme, setTheme, user, navigate} = useAppContext();
+const Sidebar = ({isMenuOpen, setIsMenuOpen}) => {
+    const {
+        chats,
+        setSelectedChat,
+        theme,
+        setTheme,
+        user,
+        navigate,
+        createNewChat,
+        axios,
+        setChats,
+        fetchUsersChat,
+        setToken,
+    } = useAppContext();
     const [search, setSearch] = useState("");
+
+    const logout = () => {
+        localStorage.removeItem("token");
+        setToken(null);
+        toast.success("Logout successfully");
+    };
 
     return (
         <div
             className={`flex flex-col h-screen p-5 min-w-72 border-r border-[#80906F]/30  backdrop-blur-3xl transition-all duration-500  max-md:absolute left-0 z-1 ${
                 theme === "dark" ? "bg-linear-to-b from-[#242124]/3 to-[##000000]/30" : ""
-            } ${!isMenuOpen&&"max-md:-translate-x-full"}`}
+            } ${!isMenuOpen && "max-md:-translate-x-full"}`}
         >
             {/* Logo */}
             <img
@@ -45,7 +64,7 @@ const Sidebar = ({isMenuOpen,setIsMenuOpen}) => {
 
             {/* Recents Chats */}
             {chats.length > 0 && <p className="mt-4 text-sm">Recents Chats</p>}
-            <div  className="flex-1 overflow-y-scroll mt-3 text-sm space-y-3">
+            <div className="flex-1 overflow-y-scroll mt-3 text-sm space-y-3">
                 {chats
                 .filter((chat) =>
                     chat.messages[0]
@@ -55,7 +74,11 @@ const Sidebar = ({isMenuOpen,setIsMenuOpen}) => {
                 .map((chat) => (
                     <div
                         key={chat._id}
-                        onClick={()=>{navigate("/");setSelectedChat(chat);setIsMenuOpen(false)}}
+                        onClick={() => {
+                            navigate("/");
+                            setSelectedChat(chat);
+                            setIsMenuOpen(false);
+                        }}
                         className={`p-2 px-4 border border-gray-300  rounded-md  cursor-pointer flex justify-between items-center group ${
                             theme === "dark" ? "bg-[#57317C1A] border-white/15" : ""
                         }`}
@@ -75,7 +98,8 @@ const Sidebar = ({isMenuOpen,setIsMenuOpen}) => {
             {/* Community Images */}
             <div
                 onClick={() => {
-                    navigate("/community");setIsMenuOpen(false)
+                    navigate("/community");
+                    setIsMenuOpen(false);
                 }}
                 className={`flex items-center  gap-2 p-3 mt-4 hover:scale-103 transition-all border border-gray-300  rounded-md  cursor-pointer ${
                     theme === "dark" ? "border-white/15" : ""
@@ -90,7 +114,8 @@ const Sidebar = ({isMenuOpen,setIsMenuOpen}) => {
             {/* Credit purchas option */}
             <div
                 onClick={() => {
-                    navigate("/credits");setIsMenuOpen(false)
+                    navigate("/credits");
+                    setIsMenuOpen(false);
                 }}
                 className={`flex items-center  gap-2 p-3 mt-4 hover:scale-103 transition-all border border-gray-300  rounded-md  cursor-pointer ${
                     theme === "dark" ? "border-white/15" : ""
@@ -141,12 +166,15 @@ const Sidebar = ({isMenuOpen,setIsMenuOpen}) => {
 
                 {user && (
                     <div className="  ">
-                        <LogOut className="w-4 hidden group-hover:block cursor-pointer" />
+                        <LogOut onClick={logout} className="w-4 hidden group-hover:block cursor-pointer" />
                     </div>
                 )}
             </div>
 
-            <X onClick={()=>setIsMenuOpen(false)} className="w-5 h-5 cursor-pointer absolute top-3 right-3 md:hidden"/>
+            <X
+                onClick={() => setIsMenuOpen(false)}
+                className="w-5 h-5 cursor-pointer absolute top-3 right-3 md:hidden"
+            />
         </div>
     );
 };

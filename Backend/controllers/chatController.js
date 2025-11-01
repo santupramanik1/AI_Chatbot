@@ -3,6 +3,7 @@
 import {Chat} from "../models/Chat.js";
 
 export const createChat = async (req, res) => {
+    // console.log("✅ createChat route hit by:", req.user?.id);
     try {
         const userId = req.user._id;
         const chatData = {
@@ -12,9 +13,9 @@ export const createChat = async (req, res) => {
             userName: req.user.name,
         };
         await Chat.create(chatData);
-        return res.status(201).json({sucess: true, message: "Chat created"});
+        return res.status(201).json({success: true, message: "Chat created"});
     } catch (error) {
-        return res.json({sucess: false, message: error.message});
+        return res.json({success: false, message: error.message});
     }
 };
 
@@ -24,9 +25,9 @@ export const getChats = async (req, res) => {
         const userId = req.user._id;
         const chats =await Chat.find({userId}).sort({updatedAt: -1});
 
-        return res.status(201).json({sucess: true, chats});
+        return res.status(201).json({success: true, chats});
     } catch (error) {
-        return res.json({sucess: false, message: error.message});
+        return res.json({success: false, message: error.message});
     }
 };
 
@@ -38,8 +39,8 @@ export const deleteChat = async (req, res) => {
 
         await Chat.deleteOne({_id: chatId, userId});
 
-        return res.status(201).json({sucess: true, message: "Chat Deleted sucessfully"});
+        return res.status(201).json({success: true, message: "Chat Deleted sucessfully"});
     } catch (error) {
-        return res.json({sucess: false, message: error.message});
+        return res.json({success: false, message: error.message});
     }
 };

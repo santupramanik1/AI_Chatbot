@@ -9,16 +9,18 @@ import {Menu} from "lucide-react";
 import "./assets/prism.css";
 import Loading from "./pages/Loading";
 import Login from "./pages/Login";
+import {Toaster} from "react-hot-toast";
 
 const App = () => {
-    const {theme, user} = useAppContext();
+    const {theme, user, loadingUser} = useAppContext();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const {pathname} = useLocation();
-    if (pathname === "/loading") return <Loading></Loading>;
+    if (pathname === "/loading" || loadingUser) return <Loading></Loading>;
 
     return (
         <>
+            <Toaster></Toaster>
             {!isMenuOpen && (
                 <Menu
                     onClick={() => setIsMenuOpen(true)}
@@ -26,7 +28,7 @@ const App = () => {
                 />
             )}
 
-            {!user ? (
+            {user ? (
                 <div className={`${theme === "dark" ? "bg-linear-to-b from-[#242124] to-[#000000] text-white" : ""}`}>
                     <div className="flex h-screen w-screen">
                         <Sidebar isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen}></Sidebar>
