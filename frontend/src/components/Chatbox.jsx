@@ -31,7 +31,7 @@ const Chatbox = () => {
                 {headers: {Authorization: token}}
             );
 
-            console.log(data)
+            console.log(data);
             if (data.success) {
                 setMessages((prev) => [...prev, data.reply]);
 
@@ -76,11 +76,21 @@ const Chatbox = () => {
             <div ref={containerRef} className="flex-1 mb-5 overflow-y-scroll">
                 {messages.length == 0 && (
                     <div className="flex flex-col items-center justify-center h-full gap-2 text-primary">
-                        <img
+                        {/* <img
                             src={theme === "dark" ? assets.logo_full : assets.logo_full_dark}
                             className="w-full max-w-56 sm:max-w-68"
                             alt="image"
-                        ></img>
+                        ></img> */}
+                        <div className="flex items-center gap-3 ">
+                            <img
+                                src={theme === "dark" ? "/logo_remove_bg.png" : "/image.png"}
+                                className="w-15  max-w-52 cursor-pointer"
+                            ></img>
+                            <div>
+                                <p className="text-2xl text-black font-bold">CogniSketch</p>
+                                <p className="text-purple-700">Intelligent AI Assistent</p>
+                            </div>
+                        </div>
                         <p
                             className={`mt-5 text-4xl sm:text-6xl text-center text-gray-400  ${
                                 theme === "dark" ? "text-white" : ""
