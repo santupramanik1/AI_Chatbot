@@ -58,7 +58,7 @@ const Sidebar = ({isMenuOpen, setIsMenuOpen}) => {
             <div className="flex items-center gap-3 ">
                 <img
                     onClick={() => navigate("/")}
-                    src={theme === "dark" ? assets.logo_full : "/image.png"}
+                    src={theme === "dark" ? "/logo_remove_bg.png" : "/image.png"}
                     className="w-15  max-w-52 cursor-pointer"
                 ></img>
                 <div>
