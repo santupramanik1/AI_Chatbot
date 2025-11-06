@@ -31,7 +31,7 @@ const Sidebar = ({isMenuOpen, setIsMenuOpen}) => {
 
     // Delete the chat
     const deleteChat = async (e, chatId) => {
-        console.log("Delete chat")
+        console.log("Delete chat");
         try {
             e.stopPropagation();
             const confirm = window.confirm("Are you sure you want to delete this chat");
@@ -55,11 +55,17 @@ const Sidebar = ({isMenuOpen, setIsMenuOpen}) => {
             } ${!isMenuOpen && "max-md:-translate-x-full"}`}
         >
             {/* Logo */}
-            <img
-                onClick={() => navigate("/")}
-                src={theme === "dark" ? assets.logo_full : assets.logo_full_dark}
-                className="w-full max-w-48 cursor-pointer"
-            ></img>
+            <div className="flex items-center gap-3 ">
+                <img
+                    onClick={() => navigate("/")}
+                    src={theme === "dark" ? assets.logo_full : "/image.png"}
+                    className="w-15  max-w-52 cursor-pointer"
+                ></img>
+                <div>
+                    <p className="text-2xl font-bold">CogniSketch</p>
+                    <p className="text-purple-700">Intelligent AI Assistent</p>
+                </div>
+            </div>
 
             {/* New Chat Button */}
             <button
