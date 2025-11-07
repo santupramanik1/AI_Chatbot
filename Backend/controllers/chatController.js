@@ -3,7 +3,6 @@
 import {Chat} from "../models/Chat.js";
 
 export const createChat = async (req, res) => {
-    // console.log("✅ createChat route hit by:", req.user?.id);
     try {
         const userId = req.user._id;
         const chatData = {

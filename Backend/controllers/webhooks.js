@@ -24,9 +24,6 @@ export const stripeWebhooks = async (request, response) => {
 
                 const session = sessionList.data[0];
                 const {transactionId, appId} = session.metadata;
-
-                console.log("✅ Webhook received:", event.type);
-                console.log("🧾 Metadata:", session.metadata);
                 
                 if (appId === "quickgpt") {
                     const transaction = await Transaction.findOne({_id: transactionId, isPaid: false});

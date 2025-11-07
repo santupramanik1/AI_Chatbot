@@ -41,7 +41,7 @@ export const textMessagesController = async (req, res) => {
 
         await chat.save();
 
-        // After generating one conetent by the AI the user credits will be decrese by 1
+        // After generating one content by the AI the user credits will be decrese by 1
         await User.updateOne({_id: userId}, {$inc: {credits: -1}});
     } catch (error) {
         return res.json({success: false, message: error.message});
