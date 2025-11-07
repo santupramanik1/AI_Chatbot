@@ -59,9 +59,9 @@ The project integrates OpenAI’s GPT models for text conversations and ImageKit
 
 ## 🛠️ Tech Stack
 
-### Frontend:	React.js, Tailwind CSS, Axios
-### Backend:	Node.js, Express.js
-### Database:	MongoDB (Mongoose)
-### AI Integration:	OpenAI API (text), ImageKit AI (image generation)
-### Payments:	Stripe Checkout + Webhooks
-### Authentication:	JWT-based Middleware
+- Frontend:	** React.js, Tailwind CSS, Axios
+- Backend:	** Node.js, Express.js
+- Database:	MongoDB (Mongoose)
+- AI Integration:	OpenAI API (text), ImageKit AI (image generation)
+- Payments:	Stripe Checkout + Webhooks
+- Authentication:	JWT-based Middleware
